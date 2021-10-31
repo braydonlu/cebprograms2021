@@ -12,7 +12,7 @@ public class Spinner implements Subsystem {
     private double spinPower= 0.0;
 
     public Spinner(Robot robot) {
-        spinMotor = robot.getMotor("liftMotor");
+        spinMotor = robot.getMotor("slide");
         spinPower=0.0;
 
 
