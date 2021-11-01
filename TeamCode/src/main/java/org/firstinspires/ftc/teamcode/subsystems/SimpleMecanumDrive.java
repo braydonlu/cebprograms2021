@@ -24,7 +24,7 @@ public class SimpleMecanumDrive implements Subsystem {
     private DcMotorEx[] motors = new DcMotorEx[4];
     private CachingSensor<Float> headingSensor;
 
-    private AnalogSensor scale_n, scale_p;
+    //private AnalogSensor scale_n, scale_p;
 
     private Double[] powers = {0.0, 0.0, 0.0, 0.0};
 
@@ -40,8 +40,8 @@ public class SimpleMecanumDrive implements Subsystem {
         imu.initialize(parameters);
         headingSensor = new CachingSensor<>(() -> imu.getAngularOrientation().firstAngle);
         robot.addListener(headingSensor);
-        scale_n = robot.getAnalogSensor("NInput");
-        scale_p = robot.getAnalogSensor("PInput");
+        //scale_n = robot.getAnalogSensor("NInput");
+        //scale_p = robot.getAnalogSensor("PInput");
 
         motors[0].setDirection(DcMotorSimple.Direction.REVERSE);
         motors[1].setDirection(DcMotorSimple.Direction.REVERSE);
@@ -68,7 +68,7 @@ public class SimpleMecanumDrive implements Subsystem {
             motors[i].setPower(powers[i]);
         }
 
-        packet.put("Scale N", scale_n.readRawVoltage());
-        packet.put("Scale P", scale_p.readRawVoltage());
+        //packet.put("Scale N", scale_n.readRawVoltage());
+        //packet.put("Scale P", scale_p.readRawVoltage());
     }
 }

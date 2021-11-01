@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.commands.DriveForTime;
 import org.firstinspires.ftc.teamcode.commands.Spin;
 import org.firstinspires.ftc.teamcode.commands.Turn;
-import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.subsystems.CrabRobot;
 @Autonomous
 public class autobotsrollout extends LinearOpMode {
@@ -38,7 +37,7 @@ public class autobotsrollout extends LinearOpMode {
         // spin carousel
         double spinPower = 0.5;
         driveTime = 3;
-        Spin spinDuck = new Spin(robot.spinner,spinPower, driveTime);
+        Spin spinDuck = new Spin(robot.slide,spinPower, driveTime);
         robot.runCommands(spinDuck);
 //obama
     }

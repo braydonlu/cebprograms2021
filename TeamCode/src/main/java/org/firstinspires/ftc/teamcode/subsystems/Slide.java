@@ -6,20 +6,20 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.robot.Subsystem;
 
-public class Spinner implements Subsystem {
+public class Slide implements Subsystem {
     //Hardware: 1 motor, 1 encoder
-    private DcMotorEx spinMotor;
-    private double spinPower= 0.0;
+    private DcMotorEx slideMotor;
+    private double slidePower= 0.0;
 
-    public Spinner(Robot robot) {
-        spinMotor = robot.getMotor("slide");
-        spinPower=0.0;
+    public Slide(Robot robot) {
+        slideMotor = robot.getMotor("slide");
+        slidePower=0.0;
 
 
     }
 
     public void setPower (double power ){
-        spinPower = power;
+        slidePower = power;
     }
 
     /*public void setTargetAngle(double targetAngle) {
@@ -43,7 +43,7 @@ public class Spinner implements Subsystem {
     @Override
     public void update(TelemetryPacket packet) {
         //double liftPower = armPID.update(getArmAngle());
-        spinMotor.setPower(spinPower);
+        slideMotor.setPower(slidePower);
     }
 }
 
