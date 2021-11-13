@@ -17,18 +17,23 @@ public class MecanumDriveTest extends LinearOpMode {
         Slide mySlide = new Slide(robot);
         robot.registerSubsystem(mecanumDrive);
         robot.registerSubsystem(mySlide);
+        int slidecountup = 0;
+        int slidecountdown = 0;
 
         waitForStart();
 
         while (!isStopRequested()) {
             robot.update();
-            mecanumDrive.setDrivePower(new Pose2d(-gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x));
-
-            if (gamepad1.left_bumper) {
-
+            mecanumDrive.setDrivePower(new Pose2d (-gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x));
+            if (gamepad1.left_bumper && slidecountup < 3) {
                 mySlide.setPower(0.2);
-            } else {
-                mySlide.setPower(-gamepad1.left_trigger );
+                slidecountup = slidecountup + 1;
+            }
+            else {
+                if (slidecountdown < 3) {
+                    mySlide.setPower(-gamepad1.left_trigger);
+                    slidecountdown = slidecountdown + 1;
+                }
 
             }
         }
