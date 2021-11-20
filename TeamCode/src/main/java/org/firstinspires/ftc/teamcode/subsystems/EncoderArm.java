@@ -13,11 +13,11 @@ import org.firstinspires.ftc.teamcode.robot.Subsystem;
 public class EncoderArm implements Subsystem {
     //Hardware: 1 motor, 1 encoder
     private DcMotorEx armMotor;
-    private static final double TICKS_PER_REV = 1993.6;
+    private static final double TICKS_PER_REV = 7168; // 28 * 256 = 7168
 
     //PID Stuff
     private PIDFController armPID;
-    private static final PIDCoefficients ARM_PID_COEFFICIENTS = new PIDCoefficients(0.1, 0, 0);
+    private static final PIDCoefficients ARM_PID_COEFFICIENTS = new PIDCoefficients(1, 0, 0);
 
     private static final double ARM_ACCEPTABLE_ERROR_MARGIN = 0.05;
 
@@ -44,6 +44,8 @@ public class EncoderArm implements Subsystem {
     public double getArmAngle() {
         return Angle.norm(getRawArmAngle());
     }
+
+    public double getPIDError() { return armPID.getLastError(); }
 
     public boolean targetReached() {
         return Math.abs(armPID.getLastError()) <= ARM_ACCEPTABLE_ERROR_MARGIN;

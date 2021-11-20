@@ -146,7 +146,6 @@ public class ScaleHx711 extends I2cDeviceSynchDeviceWithParameters<I2cDeviceSync
     {
         byte[] data = new byte[8];
         long value = 0;
-        int data0;
         data = deviceClient.read(Register.REG_DATA_GET_RAM_DATA.bVal, 8);
         //readReg(Register.REG_DATA_GET_RAM_DATA, data,8);
         /*
@@ -170,15 +169,24 @@ public class ScaleHx711 extends I2cDeviceSynchDeviceWithParameters<I2cDeviceSync
         */
 
         if (data[2] == 0x12) {
+            value = (data[3] >= 0) ? data[3] : (256 + data[3]);
 
-            for (int i = 2; i < 6; i++) {
-                int byte_val = data[i]; //(data[i] <= 0x7f) ? data[i] : (256 + data[i]);
-                value = (value << 8) + byte_val;
-            }
+
+
+            //for (int i = 3; i < 6; i++) {
+            //    int byte_val = (data[i] < 0) ? data[i] : (256 + data[i]);
+            //    if (data[i] >= 0) {
+            //        byte_val= data[i];
+            //    } else {
+            //        byte_val= data[i]+256;
+            //    }
+            //    value = (value << 8) + byte_val;
+            //}
+
+
         }
-
         return value;
-        //}
+
 
 
     }
@@ -321,14 +329,6 @@ public class ScaleHx711 extends I2cDeviceSynchDeviceWithParameters<I2cDeviceSync
 
         this.parameters = params.clone();
 
-        //this.setOptimalReadWindow();
-        /*
-        deviceClient.setI2cAddress(params.i2cAddr);
-        this.deviceClient.engage();
-
-        this.offset = average(1);
-
-         */
         byte[] initSeq = new byte[]{(byte)0x65};
         deviceClient.write(Register.REG_DATA_INIT_SENSOR.bVal, initSeq);
 
