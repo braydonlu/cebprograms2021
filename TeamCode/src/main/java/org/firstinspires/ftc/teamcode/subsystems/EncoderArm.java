@@ -21,6 +21,12 @@ public class EncoderArm implements Subsystem {
 
     private static final double ARM_ACCEPTABLE_ERROR_MARGIN = 0.05;
 
+    public enum Positions {
+        RESET,
+        INTAKE,
+        DUMP,
+    }
+
     public EncoderArm(Robot robot) {
         armMotor = robot.getMotor("armMotor");
         armMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -36,6 +42,19 @@ public class EncoderArm implements Subsystem {
         armPID.setTargetPosition(targetAngle);
     }
 
+    public void setTargetPosition(Positions position) {
+        switch (position) {
+            case RESET:
+                setTargetAngle(0 * Math.PI / 180);
+                break;
+            case INTAKE:
+                setTargetAngle(-150 * Math.PI / 180);
+                break;
+            case DUMP:
+                setTargetAngle(10 * Math.PI / 180);
+                break;
+        }
+    }
     private double getRawArmAngle() {
         // encoder position * (2pi / TICKS_PER_REV)
         return armMotor.getCurrentPosition() * (2 * Math.PI / TICKS_PER_REV);
