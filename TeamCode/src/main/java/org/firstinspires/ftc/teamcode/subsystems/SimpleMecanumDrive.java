@@ -34,7 +34,7 @@
      private static final PIDCoefficients HUB_PID_COEFFICIENTS = new PIDCoefficients(0.0006, 0.000, 0.0001);
 
      private static final double HUB_ACCEPTABLE_ERROR_MARGIN = 20.0;
-     private static final PIDCoefficients TURN_PID_COEFFICIENTS = new PIDCoefficients(0.081, 0.0, 0.1);
+     private static final PIDCoefficients TURN_PID_COEFFICIENTS = new PIDCoefficients(0.008, 0.0, 0.1);
 
      private static final double TURN_ACCEPTABLE_ERROR_MARGIN = 0.15;
 
