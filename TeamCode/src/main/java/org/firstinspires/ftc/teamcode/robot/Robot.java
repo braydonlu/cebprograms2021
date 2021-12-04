@@ -7,6 +7,7 @@ import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.AnalogSensor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -118,6 +119,12 @@ public class Robot {
         CachingServo servo = new CachingServo(hardwareMap.get(Servo.class, deviceName));
         listeners.add(servo);
         return servo;
+    }
+
+    public DistanceSensor getDistanceSensor(String deviceName) {
+        DistanceSensor sensor = hardwareMap.get(DistanceSensor.class, deviceName);
+        //listeners.add(sensor);
+        return sensor;
     }
 
     public Encoder getEncoder(String deviceName) {
