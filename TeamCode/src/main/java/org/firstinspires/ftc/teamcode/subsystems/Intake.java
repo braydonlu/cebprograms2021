@@ -10,13 +10,14 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.robot.Subsystem;
 
-public class EncoderArm implements Subsystem {
+public class Intake implements Subsystem {
     //Hardware: 1 motor, 1 encoder
-    private DcMotorEx armMotor;
+    final private DcMotorEx armMotor;
+    final private DcMotorEx sweepMotor;
     private static final double TICKS_PER_REV = 7168; // 28 * 256 = 7168
 
     //PID Stuff
-    private PIDFController armPID;
+    final private PIDFController armPID;
     private static final PIDCoefficients ARM_PID_COEFFICIENTS = new PIDCoefficients(1, 0, 0);
 
     private static final double ARM_ACCEPTABLE_ERROR_MARGIN = 0.05;
@@ -27,7 +28,7 @@ public class EncoderArm implements Subsystem {
         DUMP,
     }
 
-    public EncoderArm(Robot robot) {
+    public Intake(Robot robot) {
         armMotor = robot.getMotor("armMotor");
         armMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -35,20 +36,32 @@ public class EncoderArm implements Subsystem {
         //In order for the PID controller to find the most efficient way to go to the target position,
         //we need to bound the error inputted to the PID controller from -pi to pi radians
         armPID.setInputBounds(-Math.PI, Math.PI);
+
+        sweepMotor = robot.getMotor("sweeper");
+
     }
 
     public void setTargetAngle(double targetAngle) {
         armPID.reset();
         armPID.setTargetPosition(targetAngle);
     }
-
+    public void start() {
+        setTargetPosition(Positions.INTAKE);
+        if(targetReached()){
+            sweepMotor.setPower(0.8);
+        }
+    }
+    public void stop() {
+        sweepMotor.setPower(0.0);
+        setTargetPosition(Positions.DUMP);
+    }
     public void setTargetPosition(Positions position) {
         switch (position) {
             case RESET:
                 setTargetAngle(0 * Math.PI / 180);
                 break;
             case INTAKE:
-                setTargetAngle(-150 * Math.PI / 180);
+                setTargetAngle(-140 * Math.PI / 180);
                 break;
             case DUMP:
                 setTargetAngle(10 * Math.PI / 180);
@@ -67,7 +80,7 @@ public class EncoderArm implements Subsystem {
     public double getPIDError() { return armPID.getLastError(); }
 
     public boolean targetReached() {
-        return Math.abs(armPID.getLastError()) <= ARM_ACCEPTABLE_ERROR_MARGIN;
+        return Math.abs(getPIDError()) <= ARM_ACCEPTABLE_ERROR_MARGIN;
     }
 
     @Override

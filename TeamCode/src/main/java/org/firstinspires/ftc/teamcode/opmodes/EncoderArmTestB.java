@@ -4,14 +4,14 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.robot.Robot;
-import org.firstinspires.ftc.teamcode.subsystems.EncoderArm;
+import org.firstinspires.ftc.teamcode.subsystems.Intake;
 
 @TeleOp
 public class EncoderArmTestB extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         Robot robot = new Robot(this);
-        EncoderArm arm = new EncoderArm(robot);
+        Intake arm = new Intake(robot);
         robot.registerSubsystem(arm);
 
         telemetry.addLine("Initialization Finished");
@@ -31,14 +31,14 @@ public class EncoderArmTestB extends LinearOpMode {
                 telemetry.addData("Current arm angle" , arm.getArmAngle());
                 telemetry.update();
                 if (buttonA){
-                    arm.setTargetPosition(EncoderArm.Positions.RESET);
+                    arm.setTargetPosition(Intake.Positions.INTAKE);
 
                 }
                 else if (buttonB){
-                    arm.setTargetPosition(EncoderArm.Positions.INTAKE);
+                    arm.setTargetPosition(Intake.Positions.INTAKE);
                 }
                 else if (buttonX){
-                    arm.setTargetPosition(EncoderArm.Positions.DUMP);
+                    arm.setTargetPosition(Intake.Positions.DUMP);
                 }
             }else {
                 telemetry.addData("Target not reached :( arm angle:",arm.getArmAngle());

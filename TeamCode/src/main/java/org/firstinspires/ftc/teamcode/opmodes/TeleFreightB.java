@@ -6,25 +6,32 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.subsystems.SimpleMecanumDrive;
+import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.Slide;
 
 @TeleOp
-public class MecanumDriveTest extends LinearOpMode {
+public class TeleFreightB extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         Robot robot = new Robot(this);
         SimpleMecanumDrive mecanumDrive = new SimpleMecanumDrive(robot);
+        Intake intake = new Intake(robot);
         Slide mySlide = new Slide(robot);
-        robot.registerSubsystem(mecanumDrive);
+        robot.registerSubsystem(intake);
         robot.registerSubsystem(mySlide);
+        robot.registerSubsystem(mecanumDrive);
         int slidecountup = 0;
         int slidecountdown = 0;
+
+        intake.setTargetPosition(Intake.Positions.RESET);
 
         waitForStart();
 
         while (!isStopRequested()) {
             boolean buttonA = gamepad1.a; //enter Align
             boolean buttonB = gamepad1.b; // exit Align
+            boolean buttonX = gamepad1.x;
+            boolean buttonY = gamepad1.y;
 
             robot.update();
 
@@ -58,11 +65,21 @@ public class MecanumDriveTest extends LinearOpMode {
                     mecanumDrive.setInAlignMode(true);
                 }
 
-
                 telemetry.addLine("in button A loop");
             } else {
                 mecanumDrive.setInAlignMode(false);
                 mecanumDrive.setDrivePower(new Pose2d (-gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x));
+            }
+
+            if(buttonX) {
+                intake.start();
+                telemetry.addLine("in buttonX loop");
+            }
+
+
+            if(buttonY){
+                intake.stop();
+                telemetry.addLine("in buttonY loop");
             }
             telemetry.addData("hub PID error:", mecanumDrive.getDistPIDError());
             telemetry.addData("turn PID error:", mecanumDrive.getTurnPIDError() );
