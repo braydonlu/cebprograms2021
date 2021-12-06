@@ -60,10 +60,21 @@ public class Slide implements Subsystem {
 
     public void goDown() {
 
-        if (level > 0 && !slideMotor.isBusy() ) { // slide_state.LEVEL_0) {
-            level = level-1;
-            targetPosition = inchToTicks (INCHES_PER_LEVEL *level);
+        if (level > 0 && !slideMotor.isBusy()) { // slide_state.LEVEL_0) {
+            level = level - 1;
+            targetPosition = inchToTicks(INCHES_PER_LEVEL * level);
             slidePower = 0.2;
+
+
+        }
+    }
+    public void goalldown() {
+        if (level > 0 && !slideMotor.isBusy()) { // slide_state.LEVEL_0) {
+            level = 0;
+            targetPosition = inchToTicks(INCHES_PER_LEVEL * level);
+            slidePower = 0.2;
+
+
         }
     }
 

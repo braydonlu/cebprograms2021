@@ -26,6 +26,7 @@ public class Intake implements Subsystem {
         RESET,
         INTAKE,
         DUMP,
+        LIFT,
     }
 
     public Intake(Robot robot) {
@@ -52,19 +53,27 @@ public class Intake implements Subsystem {
         }
     }
     public void stop() {
-        sweepMotor.setPower(0.0);
         setTargetPosition(Positions.DUMP);
+        sweepMotor.setPower(0.8);
     }
+    public void reset() {
+        sweepMotor.setPower(0.0);
+        //setTargetPosition(Positions.RESET);
+    }
+
     public void setTargetPosition(Positions position) {
         switch (position) {
             case RESET:
                 setTargetAngle(0 * Math.PI / 180);
                 break;
             case INTAKE:
-                setTargetAngle(-140 * Math.PI / 180);
+                setTargetAngle(-120 * Math.PI / 180);
                 break;
             case DUMP:
-                setTargetAngle(10 * Math.PI / 180);
+                setTargetAngle(-20 * Math.PI / 180);//10
+                break;
+            case LIFT:
+                setTargetAngle(0 * Math.PI / 180); //10
                 break;
         }
     }
