@@ -14,7 +14,7 @@ public class Intake implements Subsystem {
     //Hardware: 1 motor, 1 encoder
     final private DcMotorEx armMotor;
     final private DcMotorEx sweepMotor;
-    private static final double TICKS_PER_REV = 7168; // 28 * 256 = 7168
+    private static final double TICKS_PER_REV = 4592; // 28 * 164=4592
 
     //PID Stuff
     final private PIDFController armPID;
@@ -49,12 +49,12 @@ public class Intake implements Subsystem {
     public void start() {
         setTargetPosition(Positions.INTAKE);
         if(targetReached()){
-            sweepMotor.setPower(0.8);
+            sweepMotor.setPower(-0.8);
         }
     }
     public void stop() {
         setTargetPosition(Positions.DUMP);
-        sweepMotor.setPower(0.8);
+        sweepMotor.setPower(-0.8);
     }
     public void reset() {
         sweepMotor.setPower(0.0);
@@ -67,10 +67,10 @@ public class Intake implements Subsystem {
                 setTargetAngle(0 * Math.PI / 180);
                 break;
             case INTAKE:
-                setTargetAngle(-120 * Math.PI / 180);
+                setTargetAngle(-80 * Math.PI / 180);
                 break;
             case DUMP:
-                setTargetAngle(-20 * Math.PI / 180);//10
+                setTargetAngle(-10 * Math.PI / 180);//10
                 break;
             case LIFT:
                 setTargetAngle(0 * Math.PI / 180); //10

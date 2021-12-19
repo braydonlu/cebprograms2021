@@ -9,37 +9,44 @@ import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.SimpleMecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.Slide;
 import org.firstinspires.ftc.teamcode.subsystems.dumpServo;
-
+import org.firstinspires.ftc.teamcode.subsystems.duckSpinner;
 @TeleOp
-public class TeleFreightB extends LinearOpMode {
+public class    TeleFreightB extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         Robot robot = new Robot(this);
         SimpleMecanumDrive mecanumDrive = new SimpleMecanumDrive(robot);
         dumpServo dumper = new dumpServo(robot);
         Intake intake = new Intake(robot);
-        Slide mySlide = new Slide(robot);
+        Slide mySlide = new Slide(robot, telemetry);
+        duckSpinner duckspinner = new duckSpinner(robot);
         robot.registerSubsystem(intake);
         robot.registerSubsystem(mySlide);
+        robot.registerSubsystem(duckspinner);
         robot.registerSubsystem(mecanumDrive);
         robot.registerSubsystem(dumper);
         int slidecountup = 0;
         int slidecountdown = 0;
+        boolean isApressed = false;
 
         boolean inTransfer = false;
 
         intake.setTargetPosition(Intake.Positions.RESET);
-        dumper.setServoPosition(1);
+        dumper.setServoPosition(0.6);
 
         waitForStart();
+        telemetry.addData("slide level init: ", mySlide.getLevel());
+        telemetry.update();
 
         while (!isStopRequested()) {
-            boolean buttonA = gamepad1.a; //enter Align
-            boolean buttonB = gamepad1.b; // exit Align
-            boolean buttonX = gamepad1.x;
-            boolean buttonY = gamepad1.y;
-            boolean leftBumper = gamepad1.left_bumper;
-            boolean rightBumper = gamepad1.right_bumper;
+            boolean buttonA = gamepad2.a; //enter Align
+            boolean buttonB = gamepad2.b; // exit Align
+            boolean buttonX = gamepad2.x;
+            boolean buttonY = gamepad2.y;
+            boolean leftBumper = gamepad2.left_bumper;
+            boolean rightBumper = gamepad2.right_bumper;
+            float leftTrigger = gamepad1.left_trigger;
+            float rightTrigger = gamepad1.right_trigger;
 
             robot.update();
 
@@ -92,33 +99,52 @@ public class TeleFreightB extends LinearOpMode {
 
             }
             if(buttonA) {
-                mySlide.goUp();
-                telemetry.addLine("going up");
+                if (!isApressed) {
+                    mySlide.goUp();
+                    isApressed = true;
+                    telemetry.addData("going up. level: ", mySlide.getLevel());
+
+                }
+
+            } else {
+                isApressed = false;
             }
             if(buttonB) {
                 mySlide.goalldown();
                 telemetry.addLine("going all down");
             }
             if(leftBumper) {
-                dumper.setServoPosition(0.6);
-                telemetry.addLine("dumping item");
+                int level = mySlide.getLevel();
+                double servoPosition=0.6;
+                switch (level){
+                    case 0: servoPosition= 0.6;
+                    break;
+                    case 1: servoPosition=0.17;
+                    break;
+                    case 2: servoPosition= 0.25;
+                    break;
+                    case 3: servoPosition= 0.25;
+                    break;
+
+                }
+                dumper.setServoPosition(servoPosition);
+                telemetry.addLine("dumping  ");
             }
             if (rightBumper) {
-                dumper.setServoPosition(1);
+                dumper.setServoPosition(0.6);
                 telemetry.addLine("resetting dumper");
             }
-            /*
-            telemetry.addData("hub PID error:", mecanumDrive.getDistPIDError());
-            telemetry.addData("turn PID error:", mecanumDrive.getTurnPIDError() );
-            telemetry.addData("In Alignment Mode", mecanumDrive.getInAlignMode());
-
-             */
+            if (leftTrigger > 0 ) {
+                duckspinner.setPower(3);
+            }
+            if (rightTrigger > 0) {
+                duckspinner.setPower(0);
+            }
 
 
             telemetry.update();
 
-
-
         }
+
     }
 }

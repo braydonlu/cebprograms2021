@@ -12,7 +12,7 @@ public class EncoderSlideTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         Robot robot = new Robot(this);
-        Slide slide = new Slide(robot);
+        Slide slide = new Slide(robot, telemetry);
         dumpServo dumper = new dumpServo(robot);
         robot.registerSubsystem(slide);
         robot.registerSubsystem(dumper);

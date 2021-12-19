@@ -3,6 +3,7 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.robot.Robot;
 import org.firstinspires.ftc.teamcode.robot.Subsystem;
 
@@ -15,8 +16,9 @@ public class Slide implements Subsystem {
     public static final double PULLEY_DIAMETER = 38 /25.4;
     public int level = 0;
     public static double SLIDE_LENGTH = 15.0;
-    private static final double INCHES_PER_LEVEL = 3.0;
+    private static final double INCHES_PER_LEVEL = 3.5;
     private int targetPosition = 0;
+    private Telemetry telemetry;
 
 
     public enum slide_state {
@@ -25,13 +27,15 @@ public class Slide implements Subsystem {
         LEVEL_2,
     }
 
-    public Slide(Robot robot) {
+    public Slide(Robot robot, Telemetry telemetry) {
+        this.telemetry = telemetry;
         slideMotor = robot.getMotor("slide");
         //slideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         slideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         slideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         slidePower = 0.2;
         targetPosition = 0;
+
     }
 
     public void setPower (double power ){
@@ -51,9 +55,22 @@ public class Slide implements Subsystem {
         if (level < 3 && !slideMotor.isBusy()) {
             slidePower = 0.2;
             level = level + 1;
-            targetPosition = inchToTicks (INCHES_PER_LEVEL * level);
+            switch(level){
+                case 0:
+                    targetPosition = inchToTicks(0);
+                    break;
+                case 1:
+                    targetPosition = inchToTicks(3.0);
+                    break;
+                case 2:
+                    targetPosition = inchToTicks(7.0);
+                    break;
+                case 3:
+                    targetPosition = inchToTicks(11.0);
+            }
+            //targetPosition = inchToTicks (INCHES_PER_LEVEL * level);
+            telemetry.addData("Slide leve", level);
 
-            // set encode to new position
         }
 
     }
@@ -71,7 +88,7 @@ public class Slide implements Subsystem {
     public void goalldown() {
         if (level > 0 && !slideMotor.isBusy()) { // slide_state.LEVEL_0) {
             level = 0;
-            targetPosition = inchToTicks(INCHES_PER_LEVEL * level);
+            targetPosition = 0;//inchToTicks(INCHES_PER_LEVEL * level);
             slidePower = 0.2;
 
 

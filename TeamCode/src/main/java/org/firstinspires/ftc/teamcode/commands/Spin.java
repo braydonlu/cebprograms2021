@@ -3,18 +3,18 @@ package org.firstinspires.ftc.teamcode.commands;
 import com.acmerobotics.roadrunner.util.NanoClock;
 
 import org.firstinspires.ftc.teamcode.robot.Command;
-import org.firstinspires.ftc.teamcode.subsystems.Slide;
+import org.firstinspires.ftc.teamcode.subsystems.duckSpinner;
 
 public class Spin implements Command {
-    Slide slide;
+    duckSpinner spinner;
     NanoClock clock;
     double drivePower;
     double initialTimeStamp;
     double driveTime;
     // power: positive clockwise
 
-    public Spin(Slide drive, double power, double time) {
-        slide =drive;
+    public Spin(duckSpinner drive, double power, double time) {
+        spinner =drive;
         clock=NanoClock.system();
         drivePower= power;
         driveTime=time;
@@ -22,7 +22,7 @@ public class Spin implements Command {
 
     @Override
     public void start() {
-        slide.setPower(drivePower);
+        spinner.setPower(drivePower);
         initialTimeStamp=clock.seconds();
     }
 
@@ -33,7 +33,7 @@ public class Spin implements Command {
 
     @Override
     public void stop() {
-        slide.setPower(0);
+        spinner.setPower(0);
 
     }
 

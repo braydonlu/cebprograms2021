@@ -37,7 +37,7 @@ public class autobotsrollout extends LinearOpMode {
         // spin carousel
         double spinPower = 0.5;
         driveTime = 3;
-        Spin spinDuck = new Spin(robot.slide,spinPower, driveTime);
+        Spin spinDuck = new Spin(robot.spinner,spinPower, driveTime);
         robot.runCommands(spinDuck);
 //obama
     }
