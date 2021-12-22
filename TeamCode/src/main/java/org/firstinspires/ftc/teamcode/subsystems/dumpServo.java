@@ -18,7 +18,6 @@ public class dumpServo implements Subsystem {
 
 
 
-
     public double getPosition() {
         return dumpServo.getPosition();
     }

@@ -32,19 +32,23 @@ public class    TeleFreightB extends LinearOpMode {
         boolean inTransfer = false;
 
         intake.setTargetPosition(Intake.Positions.RESET);
-        dumper.setServoPosition(0.6);
+        //dumper.setServoPosition(0.0);
 
         waitForStart();
-        telemetry.addData("slide level init: ", mySlide.getLevel());
-        telemetry.update();
 
         while (!isStopRequested()) {
+            telemetry.addData("slide level init: ", mySlide.getLevel());
+            telemetry.addData("dumpServo Position:",dumper.getPosition());
+            telemetry.update();
+
             boolean buttonA = gamepad2.a; //enter Align
             boolean buttonB = gamepad2.b; // exit Align
             boolean buttonX = gamepad2.x;
             boolean buttonY = gamepad2.y;
             boolean leftBumper = gamepad2.left_bumper;
             boolean rightBumper = gamepad2.right_bumper;
+            boolean slowMode = gamepad1.a;
+            boolean normieMode = gamepad1.b;
             float leftTrigger = gamepad1.left_trigger;
             float rightTrigger = gamepad1.right_trigger;
 
@@ -115,15 +119,13 @@ public class    TeleFreightB extends LinearOpMode {
             }
             if(leftBumper) {
                 int level = mySlide.getLevel();
-                double servoPosition=0.6;
+                double servoPosition=0.85;
                 switch (level){
-                    case 0: servoPosition= 0.6;
+                    case 1: servoPosition=0.3;
                     break;
-                    case 1: servoPosition=0.17;
+                    case 2: servoPosition= 0.45;
                     break;
-                    case 2: servoPosition= 0.25;
-                    break;
-                    case 3: servoPosition= 0.25;
+                    case 3: servoPosition= 0.48;
                     break;
 
                 }
@@ -131,8 +133,14 @@ public class    TeleFreightB extends LinearOpMode {
                 telemetry.addLine("dumping  ");
             }
             if (rightBumper) {
-                dumper.setServoPosition(0.6);
+                dumper.setServoPosition(0.85);
                 telemetry.addLine("resetting dumper");
+            }
+            if (slowMode) {
+                mecanumDrive.setPowerFactor(0.2);
+            }
+            if (normieMode) {
+                mecanumDrive.setPowerFactor(0.8);
             }
             if (leftTrigger > 0 ) {
                 duckspinner.setPower(3);

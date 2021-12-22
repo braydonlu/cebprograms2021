@@ -16,6 +16,8 @@
  import org.firstinspires.ftc.teamcode.robot.Subsystem;
 
  public class SimpleMecanumDrive implements Subsystem {
+     public double powerFactor = 0.5;
+
 
     private int MOTOR_LF= 0;
     private int MOTOR_LR= 3;
@@ -85,6 +87,17 @@
         powers[2] = drivePower.getX() - drivePower.getY() + drivePower.getHeading();
         powers[3] = drivePower.getX() + drivePower.getY() + drivePower.getHeading();
     }
+    public void setPowerFactor(double factor){
+        this.powerFactor=factor;
+    }
+    public double MMtoticks(double distance){
+
+    }
+    public void driveForDistance(int leftFrontDistance, int rightFrontDistance, int leftBackDistance, int rightBackDistance, double power){
+        for (int i = 0; i<4 ; i++){
+            motors[i].setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+    }
 
     public double getHeading() {
         return headingSensor.getValue();
@@ -139,7 +152,7 @@
         }
 
         for (int i = 0; i < 4; i++){
-            motors[i].setPower(powers[i]);
+            motors[i].setPower(powers[i] * this.powerFactor);
         }
 
 
